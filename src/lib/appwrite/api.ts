@@ -68,7 +68,11 @@ export async function signInAccount(user:{email:string,password:string}) {
 export async function getCurrentUser(){
     try{
         const currentAccount = await account.get();
-        if(!currentAccount) throw Error;
+        
+        if(!currentAccount){
+            console.log("No current account");
+            throw Error;
+        }
 
         const currentUser = await databases.listDocuments(
             appwriteConfig.databaseId,
@@ -80,6 +84,15 @@ export async function getCurrentUser(){
 
         return currentUser.documents[0];
 
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export async function signOutAccount(){
+    try{
+        const session = await account.deleteSession("current");
+        return session;
     }catch(error){
         console.log(error);
     }

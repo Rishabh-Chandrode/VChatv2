@@ -1,6 +1,7 @@
 import { getCurrentUser } from '@/lib/appwrite/api';
 import { IContextType, IUser } from '@/types';
 import { createContext, useContext, useState, useEffect} from 'react'
+import { set } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 export const INITIAL_USER = {
@@ -32,6 +33,7 @@ const AuthProvider = ({children}:{children:React.ReactNode}) => {
 
     const  checkAuthUser = async () => {
         try{
+            
             const currentAccount= await getCurrentUser();
             if(currentAccount){
                 setUser({

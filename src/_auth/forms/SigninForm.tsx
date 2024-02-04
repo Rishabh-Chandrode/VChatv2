@@ -22,7 +22,7 @@ const SigninForm = () => {
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext()
   const navigate = useNavigate();
 
-  const {mutateAsync:signInAcccount } = useSignInAccount()
+  const {mutateAsync:signInAcccount ,isPending:isSigningIn } = useSignInAccount()
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SigninValidation>>({
@@ -37,7 +37,7 @@ const SigninForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SigninValidation>) {
    
-
+     
     const session = await signInAcccount({
       email:values.email,
       password:values.password,
@@ -65,7 +65,7 @@ const SigninForm = () => {
     <Form {...form}>
 
       <div className="sm:w-420 flex-center flex-col">
-        <img src="/assets/images/logo.svg" alt="logo" />
+        <img src="/assets/icons/svg/logo-no-background.svg" className="h-8" alt="logo" />
         <h2 className="h3-bold md:h2-bold pt-1 sm:pt-1" >Log In</h2>
         {/* <p className="text-light-3 small-medium md:base-regular mt-2" >
           Enter your details
@@ -109,9 +109,9 @@ const SigninForm = () => {
 
 
           <Button type="submit" className="shad-button_primary" >
-            {isUserLoading?(
+            { isSigningIn?(
               <div className="flex-center gap-2">
-                <Loader/>
+                <Loader/> Loading...
               </div>  
             ):("Log In")}
           </Button>

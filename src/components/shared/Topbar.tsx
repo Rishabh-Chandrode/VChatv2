@@ -1,0 +1,49 @@
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Button } from '../ui/button'
+import { useSignOutAccount } from '@/lib/react-query/queriesAndMutations'
+import { useEffect } from 'react'
+import { useUserContext } from '@/context/AuthContext'
+import { sidebarLinks } from '@/constants'
+import { INavLink } from '@/types'
+
+const Topbar = () => {
+
+    const {mutate:signOut, isSuccess} = useSignOutAccount()
+    const navigate = useNavigate();
+    const {user} = useUserContext();
+
+    useEffect( () => {
+        if(isSuccess) navigate(0);
+    },[isSuccess] )
+
+  return (
+    <section className='topbar'>
+        <div className='flex-between py-4 px-5 '>
+            <Link to='/' className='flex-between gap-3 items-center'>
+                
+                <img src='assets/icons/svg/logo-no-background.svg' width={130} height={325} alt='logo' />
+            </Link>
+            <div className=' flex gap-4 '>
+                <Button variant='ghost' className='shad-button_ghost' onClick={()=>signOut()}  >
+                    <img src='/assets/icons/logout.svg' alt="logout" />
+                </Button>
+                <Link to={`/profile/${user.id}`} className='flex-center gap-3 ' >
+                    <img src={user.imageUrl || '/assets/icons/profile-placeholder.svg'} alt="profile picture" className='h-8 w-8 rounded-full' />
+                    <div className='flex flex-col'>
+                        <p className='body-bold' >
+                            {user.name}
+                        </p>
+                        <p className='small-regular text-light-3' >
+                            @{user.username}
+                        </p>
+                    </div>
+                </Link>
+                
+            </div>
+        </div>
+
+    </section>
+  )
+}
+
+export default Topbar
