@@ -145,7 +145,7 @@ export const useLikePost = () => {
     return useMutation({
      
       mutationFn: (post:IUpdatePost) => updatePost(post),
-      onSuccess: (data) => {
+      onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
         });
